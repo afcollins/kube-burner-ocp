@@ -1,9 +1,9 @@
 # API server
 
-- query: histogram_quantile(0.99, sum(irate(apiserver_request_duration_seconds_bucket{apiserver="kube-apiserver", verb=~"LIST|GET", subresource!~"log|exec|portforward|attach|proxy"}[2m])) by (le, resource, verb, scope)) > 0
+- query: histogram_quantile(0.99, sum(rate(apiserver_request_duration_seconds_bucket{apiserver="kube-apiserver", verb=~"LIST|GET", subresource!~"log|exec|portforward|attach|proxy"}[2m])) by (le, resource, verb, scope)) > 0
   metricName: readOnlyAPICallsLatency
 
-- query: histogram_quantile(0.99, sum(irate(apiserver_request_duration_seconds_bucket{apiserver="kube-apiserver", verb=~"POST|PUT|DELETE|PATCH", subresource!~"log|exec|portforward|attach|proxy"}[2m])) by (le, resource, verb, scope)) > 0
+- query: histogram_quantile(0.99, sum(rate(apiserver_request_duration_seconds_bucket{apiserver="kube-apiserver", verb=~"POST|PUT|DELETE|PATCH", subresource!~"log|exec|portforward|attach|proxy"}[2m])) by (le, resource, verb, scope)) > 0
   metricName: mutatingAPICallsLatency
 
 - query: sum(irate(apiserver_request_total{apiserver="kube-apiserver",verb!="WATCH"}[2m])) by (verb,resource,code) > 0
@@ -78,13 +78,13 @@
 
 # Etcd metrics
 
-- query: histogram_quantile(0.99, rate(etcd_disk_backend_commit_duration_seconds_bucket[2m]))
+- query: histogram_quantile(0.99, sum(rate(etcd_disk_backend_commit_duration_seconds_bucket[2m])) by (le))
   metricName: 99thEtcdDiskBackendCommitDurationSeconds
 
-- query: histogram_quantile(0.99, rate(etcd_disk_wal_fsync_duration_seconds_bucket[2m]))
+- query: histogram_quantile(0.99, sum(rate(etcd_disk_wal_fsync_duration_seconds_bucket[2m])) by (le))
   metricName: 99thEtcdDiskWalFsyncDurationSeconds
 
-- query: histogram_quantile(0.99, rate(etcd_network_peer_round_trip_time_seconds_bucket[5m]))
+- query: histogram_quantile(0.99, sum(rate(etcd_network_peer_round_trip_time_seconds_bucket[5m]) by (le))
   metricName: 99thEtcdRoundTripTimeSeconds
 
 - query: delta(etcd_debugging_mvcc_db_compaction_total_duration_milliseconds_sum[1m:30s])/2 > 0
