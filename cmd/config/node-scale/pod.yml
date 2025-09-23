@@ -7,6 +7,17 @@ metadata:
   name: kubemark-node-{{.Iteration}}
   namespace: kubemark
 spec:
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: node-role.kubernetes.io/worker
+            operator: Exists
+          - key: node-role.kubernetes.io/infra
+            operator: DoesNotExist
+          - key: node-role.kubernetes.io/workload
+            operator: DoesNotExist
   containers:
     - args:
         - --v=3
@@ -18,6 +29,10 @@ spec:
         - /kubemark
       image: "quay.io/cluster-api-provider-kubemark/kubemark:{{.tag}}"
       name: hollow-node
+      resources:
+        requests:
+          memory: "35Mi"
+          cpu: "30m"
       securityContext:
         privileged: true
       volumeMounts:
