@@ -25,6 +25,7 @@ spec:
         - --name=kubemark-node-{{.Iteration}}
         - --extended-resources=cpu={{.cpu}},memory={{.memory}}G
         - --max-pods={{.maxPods}}
+        - --node-labels=kube-burner-uuid=delete,node-role.kubernetes.io/worker-kubemark
       command:
         - /kubemark
       image: "quay.io/cluster-api-provider-kubemark/kubemark:{{.tag}}"
