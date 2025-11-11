@@ -23,7 +23,7 @@ spec:
         - --v=3
         - --morph=kubelet
         - --name=kubemark-node-{{.Iteration}}
-        - --extended-resources=cpu={{.cpu}},memory={{.memory}}G
+        - --extended-resources=cpu={{.cpu}},memory={{.memory}}G,management.workload.openshift.io/cores=112k
         - --max-pods={{.maxPods}}
         - --node-labels=kube-burner-uuid=delete,node-role.kubernetes.io/worker-kubemark
       command:
