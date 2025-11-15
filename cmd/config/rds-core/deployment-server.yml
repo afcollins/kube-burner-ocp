@@ -30,7 +30,7 @@ spec:
           requiredDuringSchedulingIgnoredDuringExecution:
             nodeSelectorTerms:
             - matchExpressions:
-              - key: node-role.kubernetes.io/worker
+              - key: node-role.kubernetes.io/worker-r750
                 operator: Exists
               - key: node-role.kubernetes.io/infra
                 operator: DoesNotExist

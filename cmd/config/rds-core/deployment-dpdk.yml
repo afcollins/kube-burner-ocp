@@ -10,25 +10,24 @@ spec:
   selector:
     matchLabels:
       name: dpdk-{{.Replica}}
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
         group: load
         name: dpdk-{{.Replica}}
       annotations:
-        irq-load-balancing.crio.io: "disable"
-        cpu-load-balancing.crio.io: "disable"
+        cpu-load-balancing.crio.io: "enable"
         cpu-quota.crio.io: "disable"
-        k8s.v1.cni.cncf.io/networks: '[
-          { "name": "sriov-dpdk-net-{{ .Iteration }}-1" },
-          { "name": "sriov-dpdk-net-{{ .Iteration }}-2" }
-        ]'
+        irq-load-balancing.crio.io: "disable"
+        k8s.v1.cni.cncf.io/networks: '[ { "name": "sriov-net-{{ .Iteration }}-1" } ]'
     spec:
       runtimeClassName: performance-{{.perf_profile}}
       containers:
         - name: dpdk
           image: ghcr.io/abraham2512/fedora-stress-ng:master
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           # Request and Limits must be identical for the Pod to be assigned to the QoS Guarantee
           resources:
             requests:
@@ -41,7 +40,7 @@ spec:
               hugepages-1Gi: {{.dpdk_hugepages}}
           env:
             - name: stress_cpu
-              value: "4"
+              value: "{{.dpdk_cores}}"
             - name: stress_vm
               value: "1"
             - name: stress_vm-bytes
