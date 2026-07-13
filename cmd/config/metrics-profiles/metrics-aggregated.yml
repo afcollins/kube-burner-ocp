@@ -15,7 +15,43 @@
   metricName: containerCPU-Masters
 
 - query: (avg(irate(container_cpu_usage_seconds_total{name!="",container!="POD",namespace=~"openshift-.*|cilium|stackrox|calico.*|tigera.*"}[2m]) * 100 and on (node) kube_node_role{role="worker"}) by (namespace, container)) > 0
-  metricName: containerCPU-AggregatedWorkers
+  metricName: containerCPU-AggregatedWorkers-Avg
+
+- query: (min(irate(container_cpu_usage_seconds_total{name!="",container!="POD",namespace=~"openshift-.*|cilium|stackrox|calico.*|tigera.*"}[2m]) * 100 and on (node) kube_node_role{role="worker"}) by (namespace, container)) > 0
+  metricName: containerCPU-AggregatedWorkers-Min
+
+- query: (max(irate(container_cpu_usage_seconds_total{name!="",container!="POD",namespace=~"openshift-.*|cilium|stackrox|calico.*|tigera.*"}[2m]) * 100 and on (node) kube_node_role{role="worker"}) by (namespace, container)) > 0
+  metricName: containerCPU-AggregatedWorkers-Max
+
+- query: (quantile(0.5, irate(container_cpu_usage_seconds_total{name!="",container!="POD",namespace=~"openshift-.*|cilium|stackrox|calico.*|tigera.*"}[2m]) * 100 and on (node) kube_node_role{role="worker"}) by (namespace, container)) > 0
+  metricName: containerCPU-AggregatedWorkers-Median
+
+- query: (quantile(0.01, irate(container_cpu_usage_seconds_total{name!="",container!="POD",namespace=~"openshift-.*|cilium|stackrox|calico.*|tigera.*"}[2m]) * 100 and on (node) kube_node_role{role="worker"}) by (namespace, container)) > 0
+  metricName: containerCPU-AggregatedWorkers-P1
+
+- query: (quantile(0.05, irate(container_cpu_usage_seconds_total{name!="",container!="POD",namespace=~"openshift-.*|cilium|stackrox|calico.*|tigera.*"}[2m]) * 100 and on (node) kube_node_role{role="worker"}) by (namespace, container)) > 0
+  metricName: containerCPU-AggregatedWorkers-P5
+
+- query: (quantile(0.10, irate(container_cpu_usage_seconds_total{name!="",container!="POD",namespace=~"openshift-.*|cilium|stackrox|calico.*|tigera.*"}[2m]) * 100 and on (node) kube_node_role{role="worker"}) by (namespace, container)) > 0
+  metricName: containerCPU-AggregatedWorkers-P10
+
+- query: (quantile(0.25, irate(container_cpu_usage_seconds_total{name!="",container!="POD",namespace=~"openshift-.*|cilium|stackrox|calico.*|tigera.*"}[2m]) * 100 and on (node) kube_node_role{role="worker"}) by (namespace, container)) > 0
+  metricName: containerCPU-AggregatedWorkers-P25
+
+- query: (quantile(0.75, irate(container_cpu_usage_seconds_total{name!="",container!="POD",namespace=~"openshift-.*|cilium|stackrox|calico.*|tigera.*"}[2m]) * 100 and on (node) kube_node_role{role="worker"}) by (namespace, container)) > 0
+  metricName: containerCPU-AggregatedWorkers-P75
+
+- query: (quantile(0.90, irate(container_cpu_usage_seconds_total{name!="",container!="POD",namespace=~"openshift-.*|cilium|stackrox|calico.*|tigera.*"}[2m]) * 100 and on (node) kube_node_role{role="worker"}) by (namespace, container)) > 0
+  metricName: containerCPU-AggregatedWorkers-P90
+
+- query: (quantile(0.95, irate(container_cpu_usage_seconds_total{name!="",container!="POD",namespace=~"openshift-.*|cilium|stackrox|calico.*|tigera.*"}[2m]) * 100 and on (node) kube_node_role{role="worker"}) by (namespace, container)) > 0
+  metricName: containerCPU-AggregatedWorkers-P95
+
+- query: (quantile(0.99, irate(container_cpu_usage_seconds_total{name!="",container!="POD",namespace=~"openshift-.*|cilium|stackrox|calico.*|tigera.*"}[2m]) * 100 and on (node) kube_node_role{role="worker"}) by (namespace, container)) > 0
+  metricName: containerCPU-AggregatedWorkers-P99
+
+- query: (stddev(irate(container_cpu_usage_seconds_total{name!="",container!="POD",namespace=~"openshift-.*|cilium|stackrox|calico.*|tigera.*"}[2m]) * 100 and on (node) kube_node_role{role="worker"}) by (namespace, container)) > 0
+  metricName: containerCPU-AggregatedWorkers-StdDev
 
 - query: (sum(irate(container_cpu_usage_seconds_total{name!="",container!="POD",namespace=~"openshift-(monitoring|sdn|ovn-kubernetes|multus|ingress)|stackrox"}[2m]) * 100) by (container, pod, namespace, node) and on (node) kube_node_role{role="infra"}) > 0
   metricName: containerCPU-Infra
@@ -24,7 +60,43 @@
   metricName: containerMemory-Masters
 
 - query: avg(container_memory_rss{name!="",container!="POD",namespace=~"openshift-.*|cilium|stackrox|calico.*|tigera.*"} and on (node) kube_node_role{role="worker"}) by (container, namespace)
-  metricName: containerMemory-AggregatedWorkers
+  metricName: containerMemory-AggregatedWorkers-Avg
+
+- query: min(container_memory_rss{name!="",container!="POD",namespace=~"openshift-.*|cilium|stackrox|calico.*|tigera.*"} and on (node) kube_node_role{role="worker"}) by (container, namespace)
+  metricName: containerMemory-AggregatedWorkers-Min
+
+- query: max(container_memory_rss{name!="",container!="POD",namespace=~"openshift-.*|cilium|stackrox|calico.*|tigera.*"} and on (node) kube_node_role{role="worker"}) by (container, namespace)
+  metricName: containerMemory-AggregatedWorkers-Max
+
+- query: quantile(0.5, container_memory_rss{name!="",container!="POD",namespace=~"openshift-.*|cilium|stackrox|calico.*|tigera.*"} and on (node) kube_node_role{role="worker"}) by (container, namespace)
+  metricName: containerMemory-AggregatedWorkers-Median
+
+- query: quantile(0.01, container_memory_rss{name!="",container!="POD",namespace=~"openshift-.*|cilium|stackrox|calico.*|tigera.*"} and on (node) kube_node_role{role="worker"}) by (container, namespace)
+  metricName: containerMemory-AggregatedWorkers-P1
+
+- query: quantile(0.05, container_memory_rss{name!="",container!="POD",namespace=~"openshift-.*|cilium|stackrox|calico.*|tigera.*"} and on (node) kube_node_role{role="worker"}) by (container, namespace)
+  metricName: containerMemory-AggregatedWorkers-P5
+
+- query: quantile(0.10, container_memory_rss{name!="",container!="POD",namespace=~"openshift-.*|cilium|stackrox|calico.*|tigera.*"} and on (node) kube_node_role{role="worker"}) by (container, namespace)
+  metricName: containerMemory-AggregatedWorkers-P10
+
+- query: quantile(0.25, container_memory_rss{name!="",container!="POD",namespace=~"openshift-.*|cilium|stackrox|calico.*|tigera.*"} and on (node) kube_node_role{role="worker"}) by (container, namespace)
+  metricName: containerMemory-AggregatedWorkers-P25
+
+- query: quantile(0.75, container_memory_rss{name!="",container!="POD",namespace=~"openshift-.*|cilium|stackrox|calico.*|tigera.*"} and on (node) kube_node_role{role="worker"}) by (container, namespace)
+  metricName: containerMemory-AggregatedWorkers-P75
+
+- query: quantile(0.90, container_memory_rss{name!="",container!="POD",namespace=~"openshift-.*|cilium|stackrox|calico.*|tigera.*"} and on (node) kube_node_role{role="worker"}) by (container, namespace)
+  metricName: containerMemory-AggregatedWorkers-P90
+
+- query: quantile(0.95, container_memory_rss{name!="",container!="POD",namespace=~"openshift-.*|cilium|stackrox|calico.*|tigera.*"} and on (node) kube_node_role{role="worker"}) by (container, namespace)
+  metricName: containerMemory-AggregatedWorkers-P95
+
+- query: quantile(0.99, container_memory_rss{name!="",container!="POD",namespace=~"openshift-.*|cilium|stackrox|calico.*|tigera.*"} and on (node) kube_node_role{role="worker"}) by (container, namespace)
+  metricName: containerMemory-AggregatedWorkers-P99
+
+- query: stddev(container_memory_rss{name!="",container!="POD",namespace=~"openshift-.*|cilium|stackrox|calico.*|tigera.*"} and on (node) kube_node_role{role="worker"}) by (container, namespace)
+  metricName: containerMemory-AggregatedWorkers-StdDev
 
 - query: (sum(container_memory_rss{name!="",container!="POD",namespace=~"openshift-.*|cilium|stackrox|calico.*|tigera.*"}) by (container, pod, namespace, node) and on (node) kube_node_role{role="infra"}) > 0
   metricName: containerMemory-Infra
@@ -35,7 +107,43 @@
   metricName: nodeCPU-Masters
 
 - query: (avg((sum(irate(node_cpu_seconds_total[2m])) by (mode,instance) and on (instance) label_replace(kube_node_role{role="worker"}, "instance", "$1", "node", "(.+)"))) by (mode)) > 0
-  metricName: nodeCPU-AggregatedWorkers
+  metricName: nodeCPU-AggregatedWorkers-Avg
+
+- query: (min((sum(irate(node_cpu_seconds_total[2m])) by (mode,instance) and on (instance) label_replace(kube_node_role{role="worker"}, "instance", "$1", "node", "(.+)"))) by (mode)) > 0
+  metricName: nodeCPU-AggregatedWorkers-Min
+
+- query: (max((sum(irate(node_cpu_seconds_total[2m])) by (mode,instance) and on (instance) label_replace(kube_node_role{role="worker"}, "instance", "$1", "node", "(.+)"))) by (mode)) > 0
+  metricName: nodeCPU-AggregatedWorkers-Max
+
+- query: (quantile(0.5, (sum(irate(node_cpu_seconds_total[2m])) by (mode,instance) and on (instance) label_replace(kube_node_role{role="worker"}, "instance", "$1", "node", "(.+)"))) by (mode)) > 0
+  metricName: nodeCPU-AggregatedWorkers-Median
+
+- query: (quantile(0.01, (sum(irate(node_cpu_seconds_total[2m])) by (mode,instance) and on (instance) label_replace(kube_node_role{role="worker"}, "instance", "$1", "node", "(.+)"))) by (mode)) > 0
+  metricName: nodeCPU-AggregatedWorkers-P1
+
+- query: (quantile(0.05, (sum(irate(node_cpu_seconds_total[2m])) by (mode,instance) and on (instance) label_replace(kube_node_role{role="worker"}, "instance", "$1", "node", "(.+)"))) by (mode)) > 0
+  metricName: nodeCPU-AggregatedWorkers-P5
+
+- query: (quantile(0.10, (sum(irate(node_cpu_seconds_total[2m])) by (mode,instance) and on (instance) label_replace(kube_node_role{role="worker"}, "instance", "$1", "node", "(.+)"))) by (mode)) > 0
+  metricName: nodeCPU-AggregatedWorkers-P10
+
+- query: (quantile(0.25, (sum(irate(node_cpu_seconds_total[2m])) by (mode,instance) and on (instance) label_replace(kube_node_role{role="worker"}, "instance", "$1", "node", "(.+)"))) by (mode)) > 0
+  metricName: nodeCPU-AggregatedWorkers-P25
+
+- query: (quantile(0.75, (sum(irate(node_cpu_seconds_total[2m])) by (mode,instance) and on (instance) label_replace(kube_node_role{role="worker"}, "instance", "$1", "node", "(.+)"))) by (mode)) > 0
+  metricName: nodeCPU-AggregatedWorkers-P75
+
+- query: (quantile(0.90, (sum(irate(node_cpu_seconds_total[2m])) by (mode,instance) and on (instance) label_replace(kube_node_role{role="worker"}, "instance", "$1", "node", "(.+)"))) by (mode)) > 0
+  metricName: nodeCPU-AggregatedWorkers-P90
+
+- query: (quantile(0.95, (sum(irate(node_cpu_seconds_total[2m])) by (mode,instance) and on (instance) label_replace(kube_node_role{role="worker"}, "instance", "$1", "node", "(.+)"))) by (mode)) > 0
+  metricName: nodeCPU-AggregatedWorkers-P95
+
+- query: (quantile(0.99, (sum(irate(node_cpu_seconds_total[2m])) by (mode,instance) and on (instance) label_replace(kube_node_role{role="worker"}, "instance", "$1", "node", "(.+)"))) by (mode)) > 0
+  metricName: nodeCPU-AggregatedWorkers-P99
+
+- query: (stddev((sum(irate(node_cpu_seconds_total[2m])) by (mode,instance) and on (instance) label_replace(kube_node_role{role="worker"}, "instance", "$1", "node", "(.+)"))) by (mode)) > 0
+  metricName: nodeCPU-AggregatedWorkers-StdDev
 
 - query: (sum(irate(node_cpu_seconds_total[2m])) by (mode,instance) and on (instance) label_replace(kube_node_role{role="infra"}, "instance", "$1", "node", "(.+)")) > 0
   metricName: nodeCPU-Infra
@@ -43,7 +151,43 @@
 # We compute memory utilization by substrating available memory to the total
 #
 - query: avg((node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) and on (instance) label_replace(kube_node_role{role="worker"}, "instance", "$1", "node", "(.+)"))
-  metricName: nodeMemoryUtilization-AggregatedWorkers
+  metricName: nodeMemoryUtilization-AggregatedWorkers-Avg
+
+- query: min((node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) and on (instance) label_replace(kube_node_role{role="worker"}, "instance", "$1", "node", "(.+)"))
+  metricName: nodeMemoryUtilization-AggregatedWorkers-Min
+
+- query: max((node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) and on (instance) label_replace(kube_node_role{role="worker"}, "instance", "$1", "node", "(.+)"))
+  metricName: nodeMemoryUtilization-AggregatedWorkers-Max
+
+- query: quantile(0.5, (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) and on (instance) label_replace(kube_node_role{role="worker"}, "instance", "$1", "node", "(.+)"))
+  metricName: nodeMemoryUtilization-AggregatedWorkers-Median
+
+- query: quantile(0.01, (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) and on (instance) label_replace(kube_node_role{role="worker"}, "instance", "$1", "node", "(.+)"))
+  metricName: nodeMemoryUtilization-AggregatedWorkers-P1
+
+- query: quantile(0.05, (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) and on (instance) label_replace(kube_node_role{role="worker"}, "instance", "$1", "node", "(.+)"))
+  metricName: nodeMemoryUtilization-AggregatedWorkers-P5
+
+- query: quantile(0.10, (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) and on (instance) label_replace(kube_node_role{role="worker"}, "instance", "$1", "node", "(.+)"))
+  metricName: nodeMemoryUtilization-AggregatedWorkers-P10
+
+- query: quantile(0.25, (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) and on (instance) label_replace(kube_node_role{role="worker"}, "instance", "$1", "node", "(.+)"))
+  metricName: nodeMemoryUtilization-AggregatedWorkers-P25
+
+- query: quantile(0.75, (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) and on (instance) label_replace(kube_node_role{role="worker"}, "instance", "$1", "node", "(.+)"))
+  metricName: nodeMemoryUtilization-AggregatedWorkers-P75
+
+- query: quantile(0.90, (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) and on (instance) label_replace(kube_node_role{role="worker"}, "instance", "$1", "node", "(.+)"))
+  metricName: nodeMemoryUtilization-AggregatedWorkers-P90
+
+- query: quantile(0.95, (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) and on (instance) label_replace(kube_node_role{role="worker"}, "instance", "$1", "node", "(.+)"))
+  metricName: nodeMemoryUtilization-AggregatedWorkers-P95
+
+- query: quantile(0.99, (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) and on (instance) label_replace(kube_node_role{role="worker"}, "instance", "$1", "node", "(.+)"))
+  metricName: nodeMemoryUtilization-AggregatedWorkers-P99
+
+- query: stddev((node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) and on (instance) label_replace(kube_node_role{role="worker"}, "instance", "$1", "node", "(.+)"))
+  metricName: nodeMemoryUtilization-AggregatedWorkers-StdDev
 
 - query: (node_memory_MemTotal_bytes - node_memory_MemAvailable_bytes) and on (instance) label_replace(kube_node_role{role="master"}, "instance", "$1", "node", "(.+)")
   metricName: nodeMemoryUtilization-Masters
